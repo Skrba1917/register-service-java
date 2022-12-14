@@ -3,11 +3,9 @@ package registrationservice.registration.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import registrationservice.registration.DTO.BusinessUserPassDTO;
+import registrationservice.registration.DTO.UserAndRole;
 import registrationservice.registration.DTO.UserDTO;
 import registrationservice.registration.DTO.UserPassDTO;
 import registrationservice.registration.Model.BusinessUser;
@@ -54,5 +52,17 @@ public class UserController {
         businessUserRepository.save(b);
 
         return new ResponseEntity<BusinessUser>(b,HttpStatus.CREATED);
+    }
+
+    @GetMapping("/myProfile")
+    public ResponseEntity pronadjiKorisnika(@RequestBody UserAndRole userAndRole){
+        if(userAndRole.getRole().equals("BusinessUser")){
+        BusinessUser businessUser = businessUserRepository.findByUsername(userAndRole.getUsername()).orElse(null);
+        return new ResponseEntity(businessUser,HttpStatus.OK);
+        }
+
+        User user = userRepository.findByUsername(userAndRole.getUsername()).orElse(null);
+        return new ResponseEntity(user,HttpStatus.OK);
+
     }
 }
