@@ -11,13 +11,23 @@ public class User {
 
 	private String username;
     private String name;
+    private String email;
     private String surname;
     private Sex sex;
     private int age;
     private String city;
 
 
-    public String getName() {
+    	
+    public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getName() {
         return name;
     }
 

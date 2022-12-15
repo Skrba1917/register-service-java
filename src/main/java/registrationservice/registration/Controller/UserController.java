@@ -55,13 +55,13 @@ public class UserController {
     }
 
     @GetMapping("/myProfile")
-    public ResponseEntity pronadjiKorisnika(@RequestBody UserAndRole userAndRole){
-        if(userAndRole.getRole().equals("BusinessUser")){
-        BusinessUser businessUser = businessUserRepository.findByUsername(userAndRole.getUsername()).orElse(null);
+    public ResponseEntity pronadjiKorisnika(@RequestParam("username") String username, @RequestParam("role") String role) {
+        if(role.equals("BusinessUser")){
+        BusinessUser businessUser = businessUserRepository.findByUsername(username).orElse(null);
         return new ResponseEntity(businessUser,HttpStatus.OK);
         }
 
-        User user = userRepository.findByUsername(userAndRole.getUsername()).orElse(null);
+        User user = userRepository.findByUsername(username).orElse(null);
         return new ResponseEntity(user,HttpStatus.OK);
 
     }
