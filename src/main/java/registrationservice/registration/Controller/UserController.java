@@ -8,6 +8,7 @@ import registrationservice.registration.DTO.BusinessUserPassDTO;
 import registrationservice.registration.DTO.UserAndRole;
 import registrationservice.registration.DTO.UserDTO;
 import registrationservice.registration.DTO.UserPassDTO;
+import registrationservice.registration.DTO.UserPassRoleDTO;
 import registrationservice.registration.Model.BusinessUser;
 import registrationservice.registration.Model.Sex;
 import registrationservice.registration.Model.User;
@@ -63,6 +64,28 @@ public class UserController {
 
         User user = userRepository.findByUsername(username).orElse(null);
         return new ResponseEntity(user,HttpStatus.OK);
+
+    }
+    
+    @GetMapping("/findByUsername")
+    public ResponseEntity pronadjiKorisnika1(@RequestParam("username") String username) {
+        
+        
+        User user = userRepository.findByUsername(username).orElse(null);
+        if(user == null) {
+        	 BusinessUser businessUser = businessUserRepository.findByUsername(username).orElse(null);
+        	 UserPassRoleDTO x = new UserPassRoleDTO();
+        	 x.setUsername(businessUser.getUsername());
+        	 x.setRole("BusinessUser");
+        	 x.setPassword(businessUser.getPassword());
+             return new ResponseEntity(x,HttpStatus.OK);
+        }
+    
+        UserPassRoleDTO x = new  UserPassRoleDTO();
+   	 	x.setUsername(user.getUsername());
+   	 	x.setRole("User");
+   	 	x.setPassword("");
+        return new ResponseEntity(x,HttpStatus.OK);
 
     }
 }
